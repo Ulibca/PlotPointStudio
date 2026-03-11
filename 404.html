@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 — PlotPointStudio</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* дополнительные стили для 404 */
+        .game-container {
+            text-align: center;
+            padding: 60px 20px;
+        }
+        canvas {
+            border: 2px solid var(--neon-green);
+            border-radius: 20px;
+            margin: 20px auto;
+            display: block;
+            box-shadow: 0 0 20px var(--neon-green);
+        }
+        .score {
+            color: var(--neon-pink);
+            font-size: 1.5rem;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <ul>
+                    <li><a href="index.html">Лента</a></li>
+                    <li><a href="team.html">Команда</a></li>
+                    <li><a href="projects.html">Проекты</a></li>
+                    <li><a href="blog.html">Блог</a></li>
+                    <li><a href="gallery.html">Галерея</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container game-container">
+        <h1 style="color: var(--neon-pink);">404</h1>
+        <p>Страница не найдена, но пока вы здесь — поймайте спрайт!</p>
+        <canvas id="gameCanvas" width="300" height="200"></canvas>
+        <div class="score">Счёт: <span id="scoreDisplay">0</span></div>
+        <a href="index.html" class="btn">Вернуться на главную</a>
+    </main>
+
+    <footer>
+        <p>© 2025 PlotPoinStudio. Все права защищены.</p>
+    </footer>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        let x = 50, y = 50;
+        let score = 0;
+        const scoreSpan = document.getElementById('scoreDisplay');
+
+        canvas.addEventListener('click', (e) => {
+            const rect = canvas.getBoundingClientRect();
+            const clickX = e.clientX - rect.left;
+            const clickY = e.clientY - rect.top;
+            if (Math.hypot(clickX - x, clickY - y) < 20) {
+                score++;
+                scoreSpan.textContent = score;
+                x = Math.random() * 280;
+                y = Math.random() * 180;
+            }
+        });
+
+        function draw() {
+            ctx.clearRect(0, 0, 300, 200);
+            ctx.fillStyle = '#00ff9d';
+            ctx.beginPath();
+            ctx.arc(x, y, 15, 0, 2 * Math.PI);
+            ctx.fill();
+            requestAnimationFrame(draw);
+        }
+        draw();
+    </script>
+</body>
+</html>
