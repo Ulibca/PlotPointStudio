@@ -50,6 +50,85 @@ nav a:hover {
     text-shadow: 0 0 8px var(--neon-green);
 }
 
+/* Сетка команды */
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 30px;
+    justify-items: center;
+    margin: 40px 0;
+}
+
+.team-member {
+    text-align: center;
+    width: 100%;
+}
+
+/* Стили аватара (круглая форма с неоновой рамкой) */
+.sprite {
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    margin: 0 auto 15px;
+    border: 3px solid var(--neon-green);
+    box-shadow: 0 0 15px var(--neon-green);
+    overflow: hidden; /* чтобы картинка не вылезала за круг */
+    background: #2a2a2a; /* фон-плейсхолдер, пока грузится */
+}
+
+.sprite img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* или contain — по желанию */
+    object-position: center; /* можно сместить, например: center top */
+    display: block;
+}
+
+/* Эффект при наведении на карточку */
+.team-member:hover .sprite {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px var(--neon-green);
+}
+
+/* Стили текста */
+.team-member p {
+    color: #ddd;
+    font-size: 1rem;
+    line-height: 1.4;
+    margin: 0;
+}
+
+.team-member strong {
+    color: var(--neon-green);
+    font-size: 1.2rem;
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* Адаптивность: на маленьких экранах аватарки меньше */
+@media (max-width: 600px) {
+    .sprite {
+        width: 140px;
+        height: 140px;
+    }
+    
+    .team-member strong {
+        font-size: 1rem;
+    }
+}
+
+/* Опционально: чередование цветов (зеленый/розовый) */
+.team-member:nth-child(odd) .sprite {
+    border-color: var(--neon-pink);
+    box-shadow: 0 0 15px var(--neon-pink);
+}
+.team-member:nth-child(odd):hover .sprite {
+    box-shadow: 0 0 30px var(--neon-pink);
+}
+.team-member:nth-child(odd) strong {
+    color: var(--neon-pink);
+}
+
 /* кнопки */
 .btn {
     display: inline-block;
@@ -68,6 +147,134 @@ nav a:hover {
     background: var(--neon-pink);
     color: #0a0a0a;
     box-shadow: 0 0 20px var(--neon-pink);
+}
+
+/* Кнопка включения звука — наследует базовые стили .btn */
+.btn-sound {
+    position: absolute;        /* поверх видео */
+    bottom: 20px;
+    right: 20px;
+    z-index: 10;
+    
+    /* Переопределяем цвет под неоново-зелёный */
+    border-color: var(--neon-green);
+    color: var(--neon-green);
+    box-shadow: 0 0 5px var(--neon-green);
+    
+    /* Добавляем полупрозрачный фон для читаемости */
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    
+    /* Можно подправить отступы, если нужно */
+    padding: 10px 20px;
+    
+    /* Убираем стандартное подчёркивание ссылки (для button оно и так не нужно) */
+    text-decoration: none;
+    border: 2px solid var(--neon-green); /* гарантируем нужную обводку */
+}
+
+.btn-sound:hover {
+    background: var(--neon-green);
+    color: #0a0a0a;
+    box-shadow: 0 0 20px var(--neon-green);
+}
+
+/* Контейнер для кастомных контролов */
+.custom-volume-controls {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(5px);
+    padding: 8px 15px;
+    border-radius: 40px;
+    border: 1px solid var(--neon-green);
+    box-shadow: 0 0 15px rgba(0, 255, 0, 0.3);
+}
+
+/* Кнопка громкости (наследует .btn, но с небольшими правками) */
+.volume-btn {
+    border: 2px solid var(--neon-green) !important;
+    color: var(--neon-green) !important;
+    background: transparent !important;
+    box-shadow: 0 0 5px var(--neon-green) !important;
+    padding: 8px 12px !important;
+    font-size: 1.2rem !important;
+    min-width: auto !important;
+    margin: 0 !important;
+}
+
+.volume-btn:hover {
+    background: var(--neon-green) !important;
+    color: #0a0a0a !important;
+    box-shadow: 0 0 20px var(--neon-green) !important;
+}
+
+/* Контейнер для ползунка и процентов */
+.volume-slider-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Стилизация ползунка */
+#volume-slider::-webkit-slider-thumb {
+    width: 120px;
+    height: 5px;
+    -webkit-appearance: none;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+}
+
+#volume-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--neon-green);
+    box-shadow: 0 0 10px var(--neon-green);
+    transition: 0.1s;
+}
+
+#volume-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.2);
+}
+
+#volume-slider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--neon-green);
+    box-shadow: 0 0 10px var(--neon-green);
+    border: none;
+    transition: 0.1s;
+}
+
+#volume-slider::-moz-range-thumb:hover {
+    transform: scale(1.2);
+}
+
+/* Отображение процентов */
+#volume-percent {
+    color: var(--neon-green);
+    font-weight: bold;
+    min-width: 40px;
+    text-align: center;
+    text-shadow: 0 0 5px var(--neon-green);
+    font-size: 0.9rem;
+}
+
+
+/* Стилизуем иконку */
+.btn-sound i {
+    margin-right: 8px;
+    font-size: 1.2em;
 }
 
 /* карточки проектов */

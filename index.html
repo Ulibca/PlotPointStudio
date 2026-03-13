@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PlotPointStudio — главная</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <header>
@@ -21,14 +22,25 @@
         </div>
     </header>
 
-    <section class="hero">
-        <video class="hero-video" autoplay muted loop playsinline>
-            <source src="gameplay.mp4" type="video/mp4">
-        </video>
+        <section class="hero" style="position: relative;">
+            <video class="hero-video" autoplay muted loop playsinline controls>
+                <source src="video/gameplay_2.mp4" type="video/mp4">
+            </video>
+                <!-- Кастомные контролы громкости -->
+                    <div class="custom-volume-controls">
+                        <button id="toggle-mute-btn" class="btn volume-btn">
+                            <i class="fas fa-volume-mute"></i>
+                        </button>
+                        <div class="volume-slider-container">
+                            <input type="range" id="volume-slider" min="0" max="1" step="0.01" value="0.5">
+                            <span id="volume-percent">50%</span>
+                        </div>
+                    </div>
         <div class="hero-content">
             <h1 style="color: var(--neon-green);">PlotPointStudio</h1>
             <p style="font-size: 1.3rem; margin: 20px 0;">Создаём игры с душой и годным сюжетом</p>
             <a href="projects.html" class="btn">Наши проекты</a>
+            <p>видео на фоне не наше автор на ютубе:</p>
         </div>
     </section>
 
@@ -51,12 +63,65 @@
     </main>
 
     <footer>
-        <p>© 2025 PlotPoinStudio. Все права защищены.</p>
+        <p>© 2026 PlotPoinStudio. Все права защищены.</p>
         <p style="margin-top: 10px;"> 
             <a href="#" style="color: var(--neon-green);">ВК(пока что нет)</a> | 
             <a href="#" style="color: var(--neon-pink);">Discord(пока что нет)</a> | 
             <a href="#" style="color: var(--neon-blue);">Twitter(пока что нет)</a>
         </p>
     </footer>
+            <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const video = document.querySelector('.hero-video');
+    const toggleMuteBtn = document.getElementById('toggle-mute-btn');
+    const volumeSlider = document.getElementById('volume-slider');
+    const volumePercent = document.getElementById('volume-percent');
+
+    // Устанавливаем начальную громкость из value ползунка (0.5)
+    video.volume = parseFloat(volumeSlider.value);
+    volumePercent.textContent = Math.round(video.volume * 100) + '%';
+
+    // Функция обновления иконки в зависимости от muted
+    function updateMuteIcon() {
+      const icon = toggleMuteBtn.querySelector('i');
+      if (video.muted) {
+        icon.className = 'fas fa-volume-mute';
+      } else {
+        icon.className = 'fas fa-volume-up';
+      }
+    }
+
+    // Обработчик кнопки mute/unmute
+    toggleMuteBtn.addEventListener('click', function() {
+      video.muted = !video.muted;
+      updateMuteIcon();
+    });
+
+    // Обработчик ползунка громкости
+    volumeSlider.addEventListener('input', function() {
+      const vol = parseFloat(volumeSlider.value);
+      video.volume = vol;
+      volumePercent.textContent = Math.round(vol * 100) + '%';
+      
+      // Если звук был выключен через muted, но громкость меняется — приятно, что muted остаётся,
+      // но пользователь видит, что громкость меняется.
+      // Если хотите автоматически выключать muted при изменении громкости — добавьте:
+      // if (video.muted && vol > 0) video.muted = false;
+      // updateMuteIcon();
+    });
+
+    // Начальное состояние иконки
+    updateMuteIcon();
+
+    // Дополнительно: если видео само меняет muted (например, через стандартные контролы),
+    // будем отслеживать это и обновлять иконку
+    video.addEventListener('volumechange', function() {
+      updateMuteIcon();
+      // Можно также синхронизировать ползунок, если громкость меняется из других мест
+      volumeSlider.value = video.volume;
+      volumePercent.textContent = Math.round(video.volume * 100) + '%';
+    });
+  });
+</script>
 </body>
 </html>
